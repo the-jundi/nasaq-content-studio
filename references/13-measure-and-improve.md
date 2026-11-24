@@ -16,7 +16,7 @@
 |---|---|
 | `id`، `title`، `planned` | من الخطة و`posts.json` (`ledger.py sync posts.json`) |
 | `status` | `idea` ← `planned` ← `designed` ← `approved` ← `published` ← `archived` |
-| `tags` | ما نُسند إليه النتيجة: `type` (قيمي، إعلاني، تسويقي)، و`hook`، و`format`، و`series`، و`layout`، و`topic`، و`cta`، و`proof` (حقيقي، مولّد)، و`slot` |
+| `tags` | ما نُسند إليه النتيجة: `style` (أسلوب المحتوى الذي يجربه المنشور)، و`run` (التشغيل الذي ينتمي إليه)، و`type` (قيمي، إعلاني، تسويقي)، و`hook`، و`format`، و`series`، و`layout`، و`topic`، و`cta`، و`proof` (حقيقي، مولّد، طباعي)، و`slot` |
 | `test` | التجربة إن وُجدت: `name`، و`variable`، و`variant`، و`hypothesis` |
 | `platforms.<منصة>` | `url`، و`published_at`، و`paid` (هل رُوِّج؟)، و`snapshots[]` |
 
@@ -191,6 +191,8 @@ python scripts/ledger.py unsnap post07 --platform ig       # يحذف آخر ق�
 | الخطة التالية، القسم 0 | «الدروس ← قواعد»: يبدأ من `playbook.md` و`feedback-log.md` |
 
 الرأي والرقم مصدران مختلفان. إن تعارضا، يُعرض التعارض على صاحب القرار ولا يُحسم بصمت.
+
+**أسلوب المحتوى له حكمه:** `ledger.py styles` يقارن الأساليب الموسومة `style` عبر التشغيلات، ويقول «واصل الاستكشاف» وما ينقص، أو «مرشح للتثبيت»، أو «تعب الأسلوب». الوكيل المراقب ينقل الحكم في تقريره؛ والتثبيت نفسه (كتابة `design-system.md`) تقوم به المهارة في بداية التشغيل التالي، وتخبر صاحب العلامة بدليله (المرجع 03 §0 ج).
 
 ---
 

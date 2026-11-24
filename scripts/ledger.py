@@ -16,7 +16,9 @@ It records; it never publishes anything. Standard library only. Guide: reference
   python ledger.py due                                   which published posts need a reading now (24h/72h/7d/28d)
   python ledger.py board                                 status of every post and what waits on whom
   python ledger.py report [--since 2026-11-01] [--out performance/report-2026-11-24.md]
+                                                         without --out it only prints; with --out it also saves the baseline in the ledger
   python ledger.py check performance/report-2026-11-24.md   fails while the analyst's placeholders are still in the report
+  python ledger.py styles [--json performance/styles.json]  which content style is winning, and is it ready to be adopted
 
 Every command takes --ledger <path> (default ./ledger.json)."""
 import argparse
@@ -154,9 +156,11 @@ def cmd_sync(a):
             except SystemExit:
                 planned = str(post['date'])
         tags = dict(post.get('tags') or {})
-        for k in ('series', 'type', 'hook'):
+        for k in ('series', 'type', 'hook', 'style', 'run'):      # style = the content style this post explores
             if post.get(k) and k not in tags:
                 tags[k] = post[k]
+        if src.get('run') and 'run' not in tags:                  # one plan = one run
+            tags['run'] = src['run']
         data['posts'].append({'id': post['id'], 'title': title, 'planned': planned, 'status': a.status, 'tags': tags,
                               'platforms': {}})
         added += 1
@@ -440,15 +444,17 @@ def n2(x):
 
 
 PLACE = '[يُكتب]'
+# a content style is adopted by the numbers when all of these hold (references/03-design-identity.md §0)
+ADOPT_MIN_POSTS, ADOPT_MIN_RUNS, ADOPT_REL, ADOPT_LEAD = 4, 2, 1.3, 1.2
+TOTAL_MIN_POSTS, TOTAL_MIN_RUNS = 12, 3
+FATIGUE_REL, FATIGUE_RUNS = 0.8, 3
 
 
-def cmd_report(a):
-    data = load(a.ledger)
+def analyse(data, since=None):
+    """every measured post-on-a-platform with its governing number, the account baseline and its rel"""
     goal = data.get('goal')
     if goal not in GOALS:
         raise SystemExit('the ledger has no valid goal; set "goal" to one of: ' + ', '.join(GOALS))
-    since = parse_time(a.since) if a.since else None
-    t = now(a)
     rows, unmeasured = [], []
     for p, plat, e in entries(data):
         if not e.get('published_at'):
@@ -485,7 +491,52 @@ def cmd_report(a):
             r['rel'] = r['primary'] / m if m else None
         rel = r['rel']
         r['cls'] = ('—' if rel is None else 'شاذ' if rel >= OUTLIER else 'فائز' if rel >= WIN else 'ضعيف' if rel <= WEAK else 'عادي')
-    label = GOALS[goal][2]
+    ranked = sorted((r for r in used if r['rel'] is not None), key=lambda r: -r['rel'])
+    return {'goal': goal, 'label': GOALS[goal][2], 'rows': rows, 'used': used, 'ranked': ranked, 'base': base, 'early': early,
+            'unmeasured': unmeasured}
+
+
+def run_of(r):
+    """the batch a post belongs to: its `run` tag (one plan = one run), else its ISO week"""
+    tag = (r['p'].get('tags') or {}).get('run')
+    return str(tag) if tag else '%d-W%02d' % r['pub'].isocalendar()[:2]
+
+
+def tag_stats(ranked):
+    dims = {}
+    for r in ranked:
+        if r['paid']:
+            continue
+        for k, v in (r['p'].get('tags') or {}).items():
+            if k != 'run':
+                dims.setdefault((k, str(v)), []).append(r)
+    stats = {}
+    for key, rs in dims.items():
+        med = statistics.median([r['rel'] for r in rs])
+        weeks = len({r['pub'].isocalendar()[:2] for r in rs})
+        strong = med >= PATTERN_HI or med <= PATTERN_LO
+        stats[key] = {'med': med, 'weeks': weeks, 'n': len(rs), 'ids': {(r['p']['id'], r['plat']) for r in rs},
+                      'verdict': '—' if not strong else ('نمط' if len(rs) >= 3 and weeks >= 2 else 'إشارة')}
+    return stats
+
+
+def overlaps(key, st, stats, only_strong=True):
+    """tag values whose posts are mostly the same posts: one piece of evidence, not two"""
+    out = []
+    for (k2, v2), s2 in stats.items():
+        if k2 == key[0] or (only_strong and s2['verdict'] == '—') or st['n'] < 2 or s2['n'] < 2:
+            continue
+        if len(st['ids'] & s2['ids']) / min(len(st['ids']), len(s2['ids'])) >= 0.75:
+            out.append(f'{k2}={v2}')
+    return out
+
+
+def cmd_report(a):
+    data = load(a.ledger)
+    since = parse_time(a.since) if a.since else None
+    t = now(a)
+    an = analyse(data, since)
+    goal, label, rows, used, ranked, base, early, unmeasured = (an[k] for k in ('goal', 'label', 'rows', 'used', 'ranked', 'base', 'early', 'unmeasured'))
     today = fmt_time(t)[:10]
     prev = {}
     for bl in data.get('baselines') or []:
@@ -525,7 +576,6 @@ def cmd_report(a):
 
     head = [f'| المنشور | المنصة | العنوان | {label} | rel | معدل التفاعل | معدل الحفظ | عمر القراءة | الوسوم | التشخيص بالمسار |',
             '|---|---|---|---|---|---|---|---|---|---|']
-    ranked = sorted((r for r in used if r['rel'] is not None), key=lambda r: -r['rel'])
     L += ['', '## 3) الفائزون والضعفاء', '']
     for title, sel in (('الفائزون (rel ≥ 1.5)', [r for r in ranked if r['cls'] in ('فائز', 'شاذ')]),
                        ('الضعفاء (rel ≤ 0.6)', [r for r in ranked if r['cls'] == 'ضعيف'])):
@@ -537,35 +587,20 @@ def cmd_report(a):
     L += ['التشخيص جملة واحدة فيها الدليل: هل الخلل في التوزيع، أم القيمة، أم أول ثانيتين، أم الدعوة؟ (المرجع 13 §10)', '',
           '## 4) الأنماط والإشارات حسب الوسم', '',
           '| الوسم | القيمة | المنشورات | الأسابيع | وسيط rel | الحكم | يتقاطع مع |', '|---|---|---|---|---|---|---|']
-    dims = {}
-    for r in ranked:
-        if r['paid']:
-            continue
-        for k, v in (r['p'].get('tags') or {}).items():
-            dims.setdefault((k, str(v)), []).append(r)
-    stats = {}
-    for key, rs in dims.items():
-        med = statistics.median([r['rel'] for r in rs])
-        weeks = len({r['pub'].isocalendar()[:2] for r in rs})
-        strong = med >= PATTERN_HI or med <= PATTERN_LO
-        stats[key] = {'med': med, 'weeks': weeks, 'n': len(rs), 'ids': {(r['p']['id'], r['plat']) for r in rs},
-                      'verdict': '—' if not strong else ('نمط' if len(rs) >= 3 and weeks >= 2 else 'إشارة')}
+    stats = tag_stats(ranked)
     found = []
     for (k, v), st in sorted(stats.items()):
-        over = []
+        over = overlaps((k, v), st, stats) if st['verdict'] != '—' else []
         if st['verdict'] != '—':
-            for (k2, v2), s2 in stats.items():
-                if (k2, v2) != (k, v) and k2 != k and s2['verdict'] != '—' and st['n'] >= 2 and s2['n'] >= 2:
-                    # overlap coefficient: most posts of the smaller group are also in the other one
-                    if len(st['ids'] & s2['ids']) / min(len(st['ids']), len(s2['ids'])) >= 0.75:
-                        over.append(f'{k2}={v2}')
             found.append((st['verdict'], k, v, st['n'], st['weeks'], st['med'], over))
         L.append(f"| {k} | {v} | {st['n']} | {st['weeks']} | {st['med']:.2f} | {st['verdict']} | {'، '.join(over) or '—'} |")
-    if not dims:
+    if not stats:
         L.append('| — | لا وسوم أو لا خط أساس بعد | | | | | |')
     L += ['', '«نمط» = 3 منشورات أو أكثر في أسبوعين مختلفين وفارق واضح. «إشارة» = فارق واضح بعينة أصغر؛ تدخل قائمة التجارب.',
-          'وسمان يتقاطعان في المنشورات نفسها **دليل واحد لا دليلان**: لا يُعرف أيهما السبب إلا بتجربة تفصل بينهما.', '',
-          f'**ما قاله الجمهور:** {PLACE} (أسئلة واعتراضات تكررت؛ أو: لم تُقرأ التعليقات)', '', '## 5) التجارب', '']
+          'وسمان يتقاطعان في المنشورات نفسها **دليل واحد لا دليلان**: لا يُعرف أيهما السبب إلا بتجربة تفصل بينهما.']
+    if any(k == 'style' for k, _ in stats):
+        L += ['أسلوب المحتوى (الوسم `style`) له حكمه الخاص: `ledger.py styles` (المرجع 03 §0).']
+    L += ['', f'**ما قاله الجمهور:** {PLACE} (أسئلة واعتراضات تكررت؛ أو: لم تُقرأ التعليقات)', '', '## 5) التجارب', '']
     tests = {}
     for r in used:
         tt = r['p'].get('test')
@@ -640,6 +675,93 @@ def cmd_report(a):
           + (' · EARLY READ' if early else ''), file=sys.stderr)
 
 
+def cmd_styles(a):
+    """which content style is winning, and whether the numbers are enough to adopt it (references/03 §0)"""
+    data = load(a.ledger)
+    an = analyse(data, parse_time(a.since) if a.since else None)
+    label = an['label']
+    org = [r for r in an['ranked'] if not r['paid']]
+    styled = [r for r in org if (r['p'].get('tags') or {}).get('style')]
+    brand_file = Path(a.ledger).resolve().parent / 'brand.json'
+    phase, adopted = 'explore', None
+    if brand_file.exists():
+        try:
+            st = json.loads(brand_file.read_text(encoding='utf-8')).get('style') or {}
+            phase, adopted = st.get('phase') or 'explore', st.get('adopted')
+        except (ValueError, OSError):
+            pass
+    groups = {}
+    for r in styled:
+        groups.setdefault(str(r['p']['tags']['style']), []).append(r)
+    stats = tag_stats(an['ranked'])
+    out = {'phase': phase, 'adopted': adopted, 'measured_with_style': len(styled), 'runs': len({run_of(r) for r in styled}), 'styles': [],
+           'decision': '', 'candidate': None}
+    for name, rs in groups.items():
+        runs = sorted({run_of(r) for r in rs})
+        key = ('style', name)
+        over = overlaps(key, stats[key], stats, only_strong=False) if key in stats else []
+        last = {}
+        for r in rs:
+            last.setdefault(run_of(r), []).append(r['rel'])
+        out['styles'].append({'style': name, 'n': len(rs), 'runs': len(runs), 'median_rel': statistics.median([r['rel'] for r in rs]),
+                              'median_primary': median([r['primary'] for r in rs]),
+                              'by_run': {k: round(statistics.median(v), 2) for k, v in sorted(last.items())}, 'overlaps': over})
+    out['styles'].sort(key=lambda s: -s['median_rel'])
+    print(f"أساليب المحتوى · {data.get('brand') or ''} · المرحلة: {'مثبّت «' + str(adopted) + '»' if phase == 'adopted' else 'استكشاف'}")
+    if not styled:
+        waiting = [r for r in an['used'] if (r['p'].get('tags') or {}).get('style')]
+        out['decision'] = (f'{len(waiting)} منشور بوسم style مقيس، لكن لا خط أساس بعد (يلزم 5 منشورات مقيسة). واصل القراءة.' if waiting else
+                           'لا منشور مقيس يحمل وسم style بعد. اكتب أسلوب كل منشور في الخطة (posts.json ← "style")، ثم ledger.py sync.')
+        print(out['decision'])
+    else:
+        print(f'\n| الأسلوب | المنشورات المقيسة | التشغيلات | وسيط rel | وسيط {label} | rel في كل تشغيل | يتقاطع مع |')
+        print('|---|---|---|---|---|---|---|')
+        for s in out['styles']:
+            print(f"| {s['style']}{' (المثبّت)' if s['style'] == adopted else ''} | {s['n']} | {s['runs']} | {s['median_rel']:.2f} | {n2(s['median_primary'])} | "
+                  f"{' · '.join(f'{k}: {v}' for k, v in s['by_run'].items())} | {'، '.join(s['overlaps']) or '—'} |")
+        best = out['styles'][0]
+        second = out['styles'][1]['median_rel'] if len(out['styles']) > 1 else None
+        need = []
+        if out['measured_with_style'] < TOTAL_MIN_POSTS:
+            need.append(f"{TOTAL_MIN_POSTS - out['measured_with_style']} منشورًا مقيسًا آخر (المطلوب {TOTAL_MIN_POSTS})")
+        if out['runs'] < TOTAL_MIN_RUNS:
+            need.append(f"{TOTAL_MIN_RUNS - out['runs']} تشغيلًا آخر (المطلوب {TOTAL_MIN_RUNS})")
+        if best['n'] < ADOPT_MIN_POSTS:
+            need.append(f"«{best['style']}» في {ADOPT_MIN_POSTS - best['n']} منشورًا آخر (المطلوب {ADOPT_MIN_POSTS})")
+        if best['runs'] < ADOPT_MIN_RUNS:
+            need.append(f"«{best['style']}» في تشغيل ثانٍ")
+        if best['median_rel'] < ADOPT_REL:
+            need.append(f'أسلوب يبلغ وسيط rel {ADOPT_REL} (الأعلى الآن {best["median_rel"]:.2f})')
+        if second is not None and second > 0 and best['median_rel'] / second < ADOPT_LEAD:
+            need.append(f'فارق {ADOPT_LEAD}× عن الأسلوب التالي (الآن {best["median_rel"] / second:.2f}×)')
+        if best['overlaps']:
+            need.append(f"فصل «{best['style']}» عن {'، '.join(best['overlaps'])}: وزّع الأساليب على الأنواع والصيغ بالتساوي")
+        if phase == 'adopted' and adopted:
+            champ = next((s for s in out['styles'] if s['style'] == adopted), None)
+            tail = list(champ['by_run'].values())[-FATIGUE_RUNS:] if champ else []
+            if champ and len(tail) == FATIGUE_RUNS and all(v < FATIGUE_REL for v in tail):
+                out['decision'] = (f'تعب الأسلوب: «{adopted}» تحت {FATIGUE_REL} في آخر {FATIGUE_RUNS} تشغيلات ({" · ".join(map(str, tail))}). '
+                                   'أعد فتح الاستكشاف: نصف المنشورات لأساليب جديدة من إلهام هذا التشغيل.')
+            elif best['style'] != adopted and not need:
+                out['candidate'] = best['style']
+                out['decision'] = (f'«{best["style"]}» تقدّم على المثبّت «{adopted}» بالشروط كلها: مرشح لنسخة جديدة من نظام التصميم (v+1).')
+            else:
+                out['decision'] = f'«{adopted}» باقٍ. واصل: نحو 80% به، ونحو 20% لأسلوب منافس من إلهام كل تشغيل.'
+        elif not need:
+            out['candidate'] = best['style']
+            out['decision'] = (f'«{best["style"]}» مرشح للتثبيت هوية للمحتوى: {best["n"]} منشورات في {best["runs"]} تشغيلات، ووسيط rel {best["median_rel"]:.2f}. '
+                               'اكتب design-system.md v1 منه، وغيّر style.phase إلى adopted، وأخبر صاحب العلامة بالدليل (المرجع 03 §0).')
+        else:
+            out['decision'] = 'واصل الاستكشاف. ينقص: ' + '؛ '.join(need) + '.'
+        plats = sorted({r['plat'] for r in styled})
+        if len(plats) == 1:
+            out['decision'] += f' (الحكم من منصة واحدة: {plats[0]}؛ لا يُعمَّم على منصة لم تُقَس.)'
+        print('\n' + out['decision'])
+    if a.json:
+        Path(a.json).write_text(json.dumps(out, ensure_ascii=False, indent=1) + '\n', encoding='utf-8')
+        print('saved:', a.json)
+
+
 def cmd_check(a):
     lines = Path(a.report).read_text(encoding='utf-8').splitlines()
     left = [(i, l.strip()[:90]) for i, l in enumerate(lines, 1) if PLACE in l and not l.lstrip().startswith('>')]
@@ -690,6 +812,7 @@ def main():
     s = sub.add_parser('board', parents=[common]); s.set_defaults(fn=cmd_board)
     s = sub.add_parser('report', parents=[common]); s.add_argument('--since'); s.add_argument('--out'); s.set_defaults(fn=cmd_report)
     s = sub.add_parser('check', parents=[common]); s.add_argument('report'); s.set_defaults(fn=cmd_check)
+    s = sub.add_parser('styles', parents=[common]); s.add_argument('--since'); s.add_argument('--json'); s.set_defaults(fn=cmd_styles)
     a = ap.parse_args()
     if a.cmd == 'snap':
         for m in METRICS:

@@ -119,6 +119,30 @@
   "news_panel": "dark",
   "_news_note": "المخطط news: لون لوح «ماذا يعني لك؟» (اسم لون من tokens). شكله بـ css: .c.lay-news #panel{…} و.ml{…}"
  },
+ "style": {
+  "phase": "explore",
+  "adopted": null,
+  "_how": "explore = كل تشغيل يجرب 2–3 أساليب من إلهام جديد فوق الهوية الرسمية. adopted = أسلوب ثبت بالأرقام (ledger.py styles) وكُتب في design-system.md؛ يأخذ نحو 80% من المنشورات، ويبقى نحو 20% لأسلوب منافس. references/03-design-identity.md §0"
+ },
+ "styles": {
+  "_example": {
+   "_note": "اسم الأسلوب مفتاحه. ما يُكتب هنا يُوضع فوق tokens و furniture و type لمنشورات هذا الأسلوب فقط (posts.json ← \"style\": \"<الاسم>\"). احذف هذا المثال.",
+   "what": "<سطر: ما الذي يميز هذا الأسلوب: التكوين، ومعالجة الصورة، ودور اللون>",
+   "inspired_by": ["<معرّف المرجع في research/inspiration/<التاريخ>/inspiration.md>"],
+   "tokens": {},
+   "furniture": {},
+   "type": {}
+  }
+ },
+ "image_generation": {
+  "allowed": false,
+  "tool": "",
+  "cap_week_usd": 0,
+  "approved_by": "",
+  "approved_on": "",
+  "client_images_as_reference": false,
+  "_how": "لا تُولَّد صورة قبل إذن صاحب العلامة بالأداة والغرض والسقف. scripts/find_image_tools.py يكتشف ما في الجهاز، و references/15-image-tools.md يشرح السؤال والحدود"
+ },
  "voice": {
   "ig": "<عامية بيضاء سعودية | فصحى مبسطة | ...>",
   "x": "<هوك بالعامية + الحقائق بفصحى مبسطة في جمل مستقلة>",

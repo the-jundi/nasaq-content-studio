@@ -11,9 +11,12 @@ posts.json:
                          {"layout": "list", "title": "...", "list": ["...", "..."]},
                          {"layout": "cta", "display": "...", "title": "...", "only": ["ig"]}]}]}
 Any slide value may be {"<format>": value, "*": default}: one source, a wording per platform (dialect on the IG cover,
-neutral Arabic on the shared landscape image). "only": [formats] keeps a slide out of the others. Relative paths
+neutral Arabic on the shared landscape image). "only": [formats] keeps a slide out of the others.
+A post may name a content style: {"id": ..., "style": "<name>"} lays brand.json -> styles.<name> (tokens, furniture, type)
+over the brand for that post only, so one batch can explore several styles on the same official identity. Relative paths
 (brand, out, plate) resolve against posts.json. Output: out/<id>/<format>/<id>-<format>-<k>.{html,png}; the counter
 reads «k / n» per format, which subset_carousel.py relies on."""
+import copy
 import json
 import sys
 from pathlib import Path
@@ -28,16 +31,35 @@ def pick(v, fmt):
             return v.get(fmt, v.get('*'))
     return v
 
+def style_brand(b, post, cache):
+    """the brand as this post's content style sees it: brand.json -> styles.<name> laid over tokens, furniture and type"""
+    name = post.get('style')
+    if not name:
+        return b
+    if name not in cache:
+        st = (b.get('styles') or {}).get(name)
+        if st is None:
+            raise SystemExit(f"post {post['id']}: style «{name}» is not defined in brand.json -> styles "
+                             f"(defined: {', '.join(b.get('styles') or {}) or 'none'})")
+        bs = copy.deepcopy(b)
+        for key in ('tokens', 'furniture', 'type'):
+            if isinstance(st.get(key), dict):
+                bs[key] = {**bs.get(key, {}), **st[key]}
+        cache[name] = bs
+    return cache[name]
+
+
 def build(posts_path, brand_path=None, only=None, html_only=False, qa=False, pdf=False, sheet=False, masks=None):
     pp = Path(posts_path).resolve()
     doc = json.loads(pp.read_text(encoding='utf-8'))
     base = pp.parent
     b = load_brand(brand_path or (base / doc['brand']))
     out = (base / doc.get('out', 'out')).resolve()
-    items, by_var = [], {}
+    items, by_var, styled = [], {}, {}
     for post in doc['posts']:
         if only and post['id'] not in only:
             continue
+        bp = style_brand(b, post, styled)
         for fmt, (W, H) in post.get('formats', {'ig': [1080, 1350]}).items():
             slides = [s for s in post['slides'] if fmt in s.get('only', [fmt])]
             d = out / post['id'] / fmt
@@ -49,10 +71,10 @@ def build(posts_path, brand_path=None, only=None, html_only=False, qa=False, pdf
                 sl = {key: pick(v, fmt) for key, v in s.items()}
                 if sl.get('plate'):
                     sl['plate'] = str((base / sl['plate']).resolve())
-                spec = make(sl, b, W, H, tag=pick(post.get('series'), fmt), counter=f'{k} / {n}' if n > 1 else None,
+                spec = make(sl, bp, W, H, tag=pick(post.get('series'), fmt), counter=f'{k} / {n}' if n > 1 else None,
                             date=post.get('date'))
                 html = d / f'{post["id"]}-{fmt}-{k}.html'
-                html.write_text(page(spec, b), encoding='utf-8')
+                html.write_text(page(spec, bp), encoding='utf-8')
                 items.append((str(html), str(html.with_suffix('.png')), W, H))
                 by_var.setdefault((post['id'], fmt), []).append(html.with_suffix('.png'))
     print(f'{len(items)} slide pages written under {out}')

@@ -50,14 +50,18 @@
  "publisher": "صاحب المحمصة ينشر يدويًا",
  "limits": ["لا ادعاءات صحية عن القهوة"],
  "banned_words": ["علاج", "يحرق الدهون"],
- "paid_generation": false,
- "budget_week_usd": 0,
+ "image_tools": {
+  "found": ["Codex CLI (على الجهاز)", "مفتاح OpenRouter (متغير بيئة)"],
+  "allowed": "Codex CLI",
+  "cap_week_usd": 5,
+  "client_images_as_reference": false
+ },
  "delivery_root": "",
  "metrics_method": "manual",
  "followers": {"instagram": 410},
  "review": "weekly",
  "assumptions": [
-  "الخط لم يُحدَّد: نقترح خطًا عربيًا واحدًا في نظام التصميم ويُعتمد بعينة",
+  "الخط لم يُحدَّد: نجرب خطًّا عربيًّا في أساليب التشغيل الأول، ويثبت مع الأسلوب الفائز",
   "أوقات النشر فرضية (مساءً بعد العمل) حتى تُقرأ الأرقام",
   "لا رقم واتساب في سطر التواصل حتى يعطينا إياه صاحب العلامة"
  ]

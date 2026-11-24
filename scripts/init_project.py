@@ -23,7 +23,7 @@ PLATFORM_KEYS = {'instagram': 'instagram', 'ig': 'instagram', 'x': 'x', 'twitter
                  'tiktok': 'tiktok', 'snapchat': 'snapchat', 'youtube': 'youtube_shorts', 'youtube_shorts': 'youtube_shorts',
                  'whatsapp': 'whatsapp_channel', 'whatsapp_channel': 'whatsapp_channel'}
 SHORT = {'instagram': 'ig', 'x': 'x', 'linkedin': 'li', 'tiktok': 'tt', 'snapchat': 'sc', 'youtube_shorts': 'yt'}
-DIRS = ['research/posts', 'research/moodboard/refs', 'plan', 'assets/fonts', 'assets/logo', 'plates', 'masks', 'performance',
+DIRS = ['research/posts', 'research/moodboard/refs', 'research/inspiration', 'plan', 'assets/fonts', 'assets/logo', 'plates', 'masks', 'performance',
         'profile-kit']
 
 
@@ -145,6 +145,16 @@ def main():
     if it.get('proof_rules'):
         b['rules']['proof_redaction'] = list(it['proof_rules'])
     b['series'] = []                       # designed at the plan stage (references/04 §5)
+    b['style'] = {'phase': 'explore', 'adopted': None, '_how': b['style']['_how']}
+    b['styles'] = {}                       # each run adds the 2-3 styles it explores (references/03 §0)
+    b['furniture']['signature'] = ''       # a signature device is found by exploring, then fixed when a style is adopted
+    tools = it.get('image_tools') or {}
+    allowed = tools.get('allowed') or (it.get('paid_generation') and it.get('image_tool')) or False
+    b['image_generation'].update({
+        'allowed': bool(allowed), 'tool': allowed if isinstance(allowed, str) else (tools.get('tool') or ''),
+        'cap_week_usd': tools.get('cap_week_usd', it.get('budget_week_usd', 0)) if allowed else 0,
+        'approved_by': it.get('approver', '') if allowed else '', 'approved_on': dt.date.today().isoformat() if allowed else '',
+        'client_images_as_reference': bool(tools.get('client_images_as_reference')), 'found': list(tools.get('found') or [])})
     b['demo_brands'] = []                  # only for brands with no real work to show yet
     ident = it.get('identity') or {}
     if ident.get('logo_color'):
@@ -164,8 +174,9 @@ def main():
         b['approvals']['channel'] = it['channel']
     b['approvals']['publisher'] = it.get('publisher') or 'manual, by the brand owner'
     b['approvals']['pending_decisions'] = list(it.get('assumptions') or [])
-    b['budget']['per_week_usd'] = it.get('budget_week_usd', 0) if it.get('paid_generation') else 0
-    if not it.get('paid_generation'):
+    paid = it.get('paid_generation') or b['image_generation']['allowed']
+    b['budget']['per_week_usd'] = b['image_generation']['cap_week_usd'] or it.get('budget_week_usd', 0) if paid else 0
+    if not paid:
         b['budget']['per_clip_usd'] = 0
         b['budget']['_note'] = 'بلا توليد مدفوع: تصميم بالكود وصور حقيقية. أي توليد مدفوع يحتاج قرارًا وسقفًا'
     b['delivery']['local_root'] = it.get('delivery_root') or str((root / 'delivery').resolve()).replace('\\', '/')
@@ -195,10 +206,10 @@ def main():
     (root / 'brand-notes.md').write_text('\n'.join(notes) + '\n', encoding='utf-8')
 
     for src, dst in (('feedback-log.template.md', 'feedback-log.md'), ('playbook.template.md', 'playbook.md'),
+                     ('style-lab.template.md', 'style-lab.md'),
                      ('experiments.template.md', 'performance/experiments.md')):
         if (ASSETS / src).exists():
             (root / dst).write_text((ASSETS / src).read_text(encoding='utf-8').replace('<العلامة>', it['name']), encoding='utf-8')
-    shutil.copy2(ASSETS / 'design-system.template.md', root / 'design-system.TEMPLATE.md')
 
     account = [{'at': today + ' 00:00', 'platform': SHORT.get(PLATFORM_KEYS.get(k.lower(), k), k), 'followers': v}
                for k, v in (it.get('followers') or {}).items() if isinstance(v, int)]
@@ -208,13 +219,15 @@ def main():
 
     print(f'project created: {root.resolve()}')
     print(f'  goal: {goal} · platforms: {", ".join(sorted(active)) or "(not set)"} · numbers: {ledger["collection"]}')
-    print('  colours: still the template defaults; take them from the official logo file in the design stage, before any render')
+    print('  colours: still the template defaults; take them from the official logo file (scripts/find_brand_identity.py), before any render')
     g = gaps(b)
     if g:
         print(f'  still empty in brand.json ({len(g)}), fill them from the site, the logo file and the design stage:')
         for x in g:
             print('    -', x)
-    print('next: build the design system (design-system.TEMPLATE.md -> design-system.md), get 3 sample slides approved, then plan two days.')
+    print(f"  image generation: {'allowed with ' + (b['image_generation']['tool'] or 'the approved tool') if b['image_generation']['allowed'] else 'not allowed yet (ask the owner: references/15-image-tools.md)'}")
+    print('next: research fresh inspiration, define 2-3 content styles for this run in brand.json -> styles (style-lab.md),')
+    print('      show one sample cover per style, then plan two days. A style is adopted later, by the numbers (ledger.py styles).')
 
 
 if __name__ == '__main__':

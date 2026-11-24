@@ -22,7 +22,7 @@ mkdir -p ~/.claude/agents && cp ~/.claude/skills/nasaq-content-studio/agents/con
 
 **المراجعة الأسبوعية (قبل اعتماد خطة الأسبوع التالي):**
 
-> استعمل الوكيل content-growth-monitor على مشروع «<مسار المشروع>»: أكمل القراءات المستحقة، ثم اكتب تقرير الأسبوع في performance/ بثلاثة قرارات على الأكثر، وحدّث experiments.md وplaybook.md، وأعطني الخلاصة وما يحتاج قراري.
+> استعمل الوكيل content-growth-monitor على مشروع «<مسار المشروع>»: أكمل القراءات المستحقة، ثم اكتب تقرير الأسبوع في performance/ بثلاثة قرارات على الأكثر، وشغّل ledger.py styles وانقل حكمه في أساليب المحتوى، وحدّث experiments.md وplaybook.md، وأعطني الخلاصة وما يحتاج قراري.
 
 **المراجعة الشهرية:**
 
