@@ -1,0 +1,64 @@
+{
+ "brand": "brand.json",
+ "out": "out",
+ "posts": [
+  {
+   "id": "post01",
+   "series": "دليل التحميص",
+   "date": "5.11.2026",
+   "formats": {
+    "ig": [
+     1080,
+     1350
+    ],
+    "w": [
+     1600,
+     900
+    ],
+    "st": [
+     1080,
+     1920
+    ]
+   },
+   "slides": [
+    {
+     "layout": "cover",
+     "display": {
+      "ig": "قهوتك مُرّة؟ <span class=\"hu\">غالبًا</span> مو من البن",
+      "*": "هل مرارة القهوة من البن؟"
+     },
+     "title": "ثلاثة أسباب تسبق البن نفسه"
+    },
+    {
+     "layout": "plate_top",
+     "plate": "plates/<image>.png",
+     "pos_y": 40,
+     "title": "1. زمن الاستخلاص",
+     "body": "أطول من <span style=\"white-space:nowrap\">4 دقائق</span> في الترشيح يسحب المرارة.",
+     "example": true
+    },
+    {
+     "layout": "number",
+     "number": "92°",
+     "title": "حرارة الماء المناسبة لأغلب التحميصات الفاتحة",
+     "source": "المصدر: دليل التحضير لدى المحمصة"
+    },
+    {
+     "layout": "list",
+     "title": "قبل أن تلوم البن:",
+     "list": [
+      "الطحنة أنعم من اللازم؟",
+      "الماء يغلي مباشرة؟",
+      "النسبة أقل من 1:15؟"
+     ]
+    },
+    {
+     "layout": "cta",
+     "display": "جرّب «حصاد الشهر»",
+     "title": "ونرسل معه بطاقة ضبط الطحنة"
+    }
+   ]
+  }
+ ],
+ "_how": "Example batch for scripts/build.py (relative paths resolve against this file). Any slide value may be {\"<format>\": v, \"*\": default}; \"only\": [formats] limits a slide. Layouts: cover typo plate_full plate_top number list cta raw."
+}

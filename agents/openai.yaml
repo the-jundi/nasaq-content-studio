@@ -1,0 +1,4 @@
+interface:
+  display_name: "Nasaq Content Studio"
+  short_description: "Interview, plan, design, deliver and measure brand social content"
+  default_prompt: "Use $nasaq-content-studio to interview me about my brand, then plan and produce a week of social content."

@@ -1,0 +1,224 @@
+{
+ "_how": "scripts/init_project.py writes this file from the first-interview answers; or copy it to the brand's content folder as brand.json and fill every <...>. Relative paths resolve against this file. Field guide: references/01-brand-intake.md. Keys starting with _ are notes.",
+ "name": "<الاسم الرسمي كما في الشعار والسجل>",
+ "name_in_text": "<كيف يُكتب الاسم داخل النص، مثل العلامة التقنية>",
+ "hashtag": "#<وسم العلامة>",
+ "domain": "<example.sa>",
+ "email": "<hello@example.sa>",
+ "phone": "",
+ "contact_line": "<السطر الحرفي الذي ينتهي به كل CTA، مثل: تواصل معنا عبر موقعنا example.sa أو hello@example.sa>",
+ "lang": "ar",
+ "sector": "<القطاع والنشاط بدقة: محمصة قهوة مختصة تبيع أونلاين وفي فرع واحد بالرياض>",
+ "positioning": "<جملة واحدة: لمن، وماذا نقدّم، ولماذا نحن لا غيرنا>",
+ "promise": "<السطر الجامع الذي تتكرر تحته المنشورات>",
+ "goal": "<awareness | trust | leads | sales | hiring: الهدف الأساسي من المقابلة الأولى، ومنه المقياس الحاكم>",
+ "audience": [
+  {
+   "name": "<شخصية 1>",
+   "age": "<25-35>",
+   "city": "<جدة>",
+   "role": "<صاحب متجر>",
+   "where": [
+    "Instagram",
+    "WhatsApp"
+   ],
+   "pains": [
+    "<ألم مصاغ كمشهد أو سؤال، مع مصدره أو: فرضية من خبرة الفريق>"
+   ]
+  }
+ ],
+ "proof_pool": [
+  "<عمل حقيقي أو رقم موثّق أو صورة منتج حقيقية + مسار الملف + هل يُسمح بنشره>"
+ ],
+ "offer": {
+  "cta_formula": "<احجز جلسة 30 دقيقة: نراجع فيها [X] ونرسم معك [Y]>",
+  "price_status": "pending-owner",
+  "_price_status": "hidden (لا تُذكر الأسعار) | shown (تُذكر بعد تأكيد صاحب القرار) | pending-owner (لم يُقرَّر)",
+  "reply_time": ""
+ },
+ "tokens": {
+  "_roles": "bg page · surface CTA/stamp slide · alt typographic slides · ink text · ink_soft secondary text · sub source lines · accent = ONE meaning only (e.g. the human decision) · link contact links · note handwritten notes (>= 4.5:1 on plate_bg) · plate_bg image backdrop · line borders · dark dark slides",
+  "bg": "#f6f7f8",
+  "surface": "#ffffff",
+  "alt": "#eef1f3",
+  "ink": "#14181c",
+  "ink_soft": "#3d464f",
+  "sub": "#5d6771",
+  "accent": "#c8572b",
+  "link": "#9c3f1b",
+  "note": "#8a3a17",
+  "plate_bg": "#efe9df",
+  "line": "#dde3e8",
+  "dark": "#14181c",
+  "sub_dark": "#b9bdc3",
+  "link_dark": "#ffffff"
+ },
+ "font": {
+  "name": "<اسم الخط الرسمي>",
+  "family_css": "BrandFont",
+  "fallback": "sans-serif",
+  "files": {
+   "300": "<fonts/Light.woff2>",
+   "400": "<fonts/Regular.woff2>",
+   "500": "<fonts/Medium.woff2>",
+   "700": "<fonts/Bold.woff2>",
+   "900": "<fonts/Black.woff2>"
+  }
+ },
+ "type": {
+  "lh_display": 1.35,
+  "lh_title": 1.45,
+  "lh_body": 1.9,
+  "scale": 1,
+  "_scale_note": "الخطوط العريضة (Montserrat Arabic، DIN Next) تحتاج 0.85–0.9 حتى لا تنكسر العناوين؛ type.sizes {\"portrait\": {\"display\": 80}} للضبط الدقيق"
+ },
+ "logo": {
+  "color": "<logo/logo-color.svg>",
+  "white": "<logo/logo-white.svg>",
+  "mark_white": "<logo/mark-white.svg (optional, for the stamp)>",
+  "height": {
+   "portrait": 72,
+   "landscape": 60,
+   "*": 66
+  },
+  "source": "<من أين أُخذت الملفات الرسمية وتاريخها؛ لا يُعاد رسم الشعار>"
+ },
+ "furniture": {
+  "footer": "<example.sa>",
+  "disclosure": "مثال توضيحي",
+  "stamp_lines": [],
+  "signature": "<أداة التوقيع البصري في سطر: ما الذي يجعل منشورنا معروفًا بلا شعار>",
+  "logo_pos": "start",
+  "tag_style": "chip",
+  "bullet": "dot",
+  "crop_marks": false,
+  "cta_footer": "auto",
+  "decor_html": "",
+  "css": "",
+  "_furniture_how": "كل ما يصنع أداة التوقيع يُكتب هنا لا في الشرائح: bullet (dot|square|dash|tick|none)، crop_marks، plate_window، bg_css، decor_html (نص واحد أو {\"cover\": \"…\", \"*\": \"…\"})، css. اللوحة تحمل الأصناف bg-<اللون> lay-<المخطط> fam-<العائلة> dark لاستهداف نوع شريحة بلا حيل. أمثلة في references/03-design-identity.md",
+  "_stamp_note": "اختياري: سطران لختم ثقة في آخر شريحة، إن كانت أداة توقيع العلامة ختمًا. فارغ = بلا ختم",
+  "_plate_window_example": {
+   "_note": "اختياري: نافذة الصورة [x, y, w, h] لكل عائلة مقاس؛ احذفه لصورة بعرض اللوحة",
+   "portrait": [
+    72,
+    188,
+    936,
+    692
+   ],
+   "landscape": [
+    64,
+    64,
+    560,
+    752
+   ]
+  },
+  "_bg_css_example": {
+   "_note": "اختياري: خلفية CSS لاسم لون (تدرّج مثلًا)",
+   "dark": "linear-gradient(180deg,rgba(0,0,0,0) 35%,#000 100%),#16171A"
+  },
+  "news_panel": "dark",
+  "_news_note": "المخطط news: لون لوح «ماذا يعني لك؟» (اسم لون من tokens). شكله بـ css: .c.lay-news #panel{…} و.ml{…}"
+ },
+ "voice": {
+  "ig": "<عامية بيضاء سعودية | فصحى مبسطة | ...>",
+  "x": "<هوك بالعامية + الحقائق بفصحى مبسطة في جمل مستقلة>",
+  "li": "<فصحى مبسطة دائمًا>",
+  "image_landscape": "<عربية محايدة تصلح للسجلّين>",
+  "image_portrait": "<سطر عامية واحد على الغلاف على الأكثر، والبقية محايدة>",
+  "emoji": "<0-1 في إكس ولينكدإن، 1 في آخر هوك إنستقرام>",
+  "glossary": {
+   "بريف": "الموجز",
+   "كونتنت": "المحتوى",
+   "الشاشة الأولى": "الصفحة الرئيسية"
+  }
+ },
+ "captions": {
+  "banned_words": [
+   "مجانًا"
+  ],
+  "spelling": {},
+  "max_hashtags": 3,
+  "ai_latin_ok": false,
+  "register": {
+   "ig": "mixed",
+   "x": "mixed",
+   "li": "formal"
+  }
+ },
+ "platforms": {
+  "instagram": true,
+  "x": true,
+  "linkedin": true,
+  "tiktok": false,
+  "snapchat": false,
+  "youtube_shorts": false,
+  "whatsapp_channel": false
+ },
+ "cadence": {
+  "ideas_per_week": 5,
+  "video_per_week": 2,
+  "_density": "ideas_per_week = عدد الأفكار التي يراجعها صاحب القرار أسبوعيًا، ولكل فكرة نسخة لكل منصة. ابدأ منخفضًا: منشور إلى منشورين يوميًا حدًّا أعلى. يُرفع العدد حين تؤيده الأرقام (references/13-measure-and-improve.md)",
+  "_times": "اكتب كل وقت مع سببه، ثم أعد التحقق بعد أسبوعين من الأرقام الفعلية"
+ },
+ "series": [
+  {
+   "name": "<اسم ثابت>",
+   "rhythm": "<أسبوعي، الخميس>",
+   "format": "<بطاقة / كاروسيل / ريل>",
+   "why": "<لماذا سيعود الجمهور لها>"
+  }
+ ],
+ "rules": {
+  "excluded_projects": [
+   "<مشاريع لا تُذكر>"
+  ],
+  "occasions": [
+   "عيد الفطر",
+   "عيد الأضحى"
+  ],
+  "people_in_visuals": "none",
+  "music": "none",
+  "third_party_logos": "official files only, unaltered, no partnership claim without proof",
+  "claims": "every number has a source; unsourced = say «كثير» or drop it"
+ },
+ "demo_brands": [
+  {
+   "name": "<اسم متجر/منشأة تجريبية>",
+   "sector": "<قطاعها>",
+   "_note": "يوسم «مثال توضيحي»؛ لا تكرر الاسم نفسه في أكثر من منشورين في الأسبوع"
+  }
+ ],
+ "delivery": {
+  "local_root": "<مجلد التسليم المحلي: …/<العلامة> - محتوى الأسبوع (…)>",
+  "drive_root": "<اختياري: مجلد مزامَن مثل Google Drive أو OneDrive؛ اتركه فارغًا إن لم يوجد>",
+  "caption_file": "النص (كابشن).txt",
+  "platform_folders": {
+   "ig": "01 - إنستقرام Instagram",
+   "x": "02 - إكس X",
+   "li": "03 - لينكدإن LinkedIn"
+  },
+  "readme": "README-delivery.md",
+  "production_files": [
+   "plan/plan-v1.md",
+   "design-system.md",
+   "research/moodboard/00-moodboard.png"
+  ],
+  "note": "لم يُنشر شيء ولم يُجدوَل."
+ },
+ "approvals": {
+  "approver": "<من يعتمد: المالك / العميل / الاثنان>",
+  "channel": "<كيف يصله الطلب>",
+  "pending_decisions": [
+   "<قرار لم يُحسم بعد>"
+  ]
+ },
+ "budget": {
+  "per_clip_usd": 3,
+  "per_week_usd": 20,
+  "_note": "سقف لكل توليد مدفوع؛ اسأل قبل تجاوزه"
+ },
+ "news": {
+  "question": "ماذا يعني لك؟",
+  "_note": "السؤال الافتراضي في بطاقات المخطط news؛ الشريحة تغيّره بـ means_label"
+ }
+}

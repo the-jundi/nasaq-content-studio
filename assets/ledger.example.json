@@ -1,0 +1,582 @@
+{
+ "brand": "محمصة المثال (علامة تجريبية)",
+ "goal": "trust",
+ "collection": "manual",
+ "baseline_window": 20,
+ "checkpoints_h": [
+  24,
+  72,
+  168,
+  672
+ ],
+ "account": [],
+ "posts": [
+  {
+   "id": "post01",
+   "title": "قهوتك مُرّة؟ غالبًا مو من البن",
+   "planned": "2026-11-01 20:30",
+   "status": "published",
+   "tags": {
+    "type": "قيمي",
+    "hook": "سؤال",
+    "format": "carousel",
+    "series": "دليل التحميص"
+   },
+   "platforms": {
+    "ig": {
+     "snapshots": [
+      {
+       "at": "2026-11-02 21:30",
+       "source": "manual",
+       "reach": 1045,
+       "likes": 36,
+       "comments": 5,
+       "saves": 29,
+       "shares": 10,
+       "dms": 2,
+       "followers": 410
+      },
+      {
+       "at": "2026-11-08 21:30",
+       "source": "manual",
+       "reach": 1900,
+       "likes": 60,
+       "comments": 5,
+       "saves": 58,
+       "shares": 21,
+       "dms": 2,
+       "followers": 419
+      }
+     ],
+     "url": "https://www.instagram.com/p/EXAMPLE01/",
+     "published_at": "2026-11-01 20:30"
+    }
+   },
+   "test": {
+    "name": "هوك المرجعيات",
+    "variable": "hook",
+    "variant": "سؤال",
+    "hypothesis": "هوك السؤال يرفع الحفظ والمشاركة عن هوك الرقم في منشورات دليل التحميص"
+   },
+   "status_at": "2026-11-24 14:27"
+  },
+  {
+   "id": "post02",
+   "title": "92° حرارة الماء المناسبة",
+   "planned": "2026-11-02 20:30",
+   "status": "published",
+   "tags": {
+    "type": "قيمي",
+    "hook": "رقم",
+    "format": "carousel",
+    "series": "دليل التحميص"
+   },
+   "platforms": {
+    "ig": {
+     "snapshots": [
+      {
+       "at": "2026-11-03 21:30",
+       "source": "manual",
+       "reach": 742,
+       "likes": 28,
+       "comments": 2,
+       "saves": 12,
+       "shares": 3,
+       "dms": 0,
+       "followers": 416
+      },
+      {
+       "at": "2026-11-09 21:30",
+       "source": "manual",
+       "reach": 1350,
+       "likes": 48,
+       "comments": 2,
+       "saves": 24,
+       "shares": 7,
+       "dms": 0,
+       "followers": 425
+      }
+     ],
+     "url": "https://www.instagram.com/p/EXAMPLE02/",
+     "published_at": "2026-11-02 20:30"
+    }
+   },
+   "test": {
+    "name": "هوك المرجعيات",
+    "variable": "hook",
+    "variant": "رقم",
+    "hypothesis": "هوك السؤال يرفع الحفظ والمشاركة عن هوك الرقم في منشورات دليل التحميص"
+   },
+   "status_at": "2026-11-24 14:27"
+  },
+  {
+   "id": "post03",
+   "title": "حصاد الشهر: إثيوبي مغسول",
+   "planned": "2026-11-03 13:00",
+   "status": "published",
+   "tags": {
+    "type": "تسويقي",
+    "hook": "إعلان",
+    "format": "single"
+   },
+   "platforms": {
+    "ig": {
+     "snapshots": [
+      {
+       "at": "2026-11-04 14:00",
+       "source": "manual",
+       "reach": 605,
+       "likes": 31,
+       "comments": 3,
+       "saves": 4,
+       "shares": 1,
+       "dms": 3,
+       "followers": 422
+      },
+      {
+       "at": "2026-11-10 14:00",
+       "source": "manual",
+       "reach": 1100,
+       "likes": 52,
+       "comments": 3,
+       "saves": 9,
+       "shares": 3,
+       "dms": 3,
+       "followers": 431
+      }
+     ],
+     "url": "https://www.instagram.com/p/EXAMPLE03/",
+     "published_at": "2026-11-03 13:00"
+    }
+   },
+   "status_at": "2026-11-24 14:27"
+  },
+  {
+   "id": "post04",
+   "title": "خصم الشحن هذا الأسبوع",
+   "planned": "2026-11-04 13:00",
+   "status": "published",
+   "tags": {
+    "type": "إعلاني",
+    "hook": "عرض",
+    "format": "single"
+   },
+   "platforms": {
+    "ig": {
+     "snapshots": [
+      {
+       "at": "2026-11-05 14:00",
+       "source": "manual",
+       "reach": 352,
+       "likes": 10,
+       "comments": 0,
+       "saves": 1,
+       "shares": 0,
+       "dms": 1,
+       "followers": 428
+      },
+      {
+       "at": "2026-11-11 14:00",
+       "source": "manual",
+       "reach": 640,
+       "likes": 18,
+       "comments": 0,
+       "saves": 2,
+       "shares": 1,
+       "dms": 1,
+       "followers": 437
+      }
+     ],
+     "url": "https://www.instagram.com/p/EXAMPLE04/",
+     "published_at": "2026-11-04 13:00",
+     "paid": true
+    }
+   },
+   "status_at": "2026-11-24 14:27"
+  },
+  {
+   "id": "post05",
+   "title": "من الكرز إلى الكوب في 40 ثانية",
+   "planned": "2026-11-05 20:30",
+   "status": "published",
+   "tags": {
+    "type": "قيمي",
+    "hook": "مفارقة",
+    "format": "reel"
+   },
+   "platforms": {
+    "ig": {
+     "snapshots": [
+      {
+       "at": "2026-11-06 21:30",
+       "source": "manual",
+       "reach": 1320,
+       "likes": 57,
+       "comments": 8,
+       "saves": 15,
+       "shares": 13,
+       "dms": 1,
+       "followers": 434
+      },
+      {
+       "at": "2026-11-12 21:30",
+       "source": "manual",
+       "reach": 2400,
+       "likes": 95,
+       "comments": 8,
+       "saves": 31,
+       "shares": 26,
+       "dms": 1,
+       "followers": 443
+      }
+     ],
+     "url": "https://www.instagram.com/p/EXAMPLE05/",
+     "published_at": "2026-11-05 20:30"
+    }
+   },
+   "status_at": "2026-11-24 14:27"
+  },
+  {
+   "id": "post06",
+   "title": "ليش طحنتك تفرق؟",
+   "planned": "2026-11-08 20:30",
+   "status": "published",
+   "tags": {
+    "type": "قيمي",
+    "hook": "سؤال",
+    "format": "carousel",
+    "series": "دليل التحميص"
+   },
+   "platforms": {
+    "ig": {
+     "snapshots": [
+      {
+       "at": "2026-11-09 21:30",
+       "source": "manual",
+       "reach": 1155,
+       "likes": 42,
+       "comments": 9,
+       "saves": 33,
+       "shares": 9,
+       "dms": 4,
+       "followers": 440
+      },
+      {
+       "at": "2026-11-15 21:30",
+       "source": "manual",
+       "reach": 2100,
+       "likes": 70,
+       "comments": 9,
+       "saves": 66,
+       "shares": 19,
+       "dms": 4,
+       "followers": 449
+      }
+     ],
+     "url": "https://www.instagram.com/p/EXAMPLE06/",
+     "published_at": "2026-11-08 20:30"
+    }
+   },
+   "test": {
+    "name": "هوك المرجعيات",
+    "variable": "hook",
+    "variant": "سؤال",
+    "hypothesis": "هوك السؤال يرفع الحفظ والمشاركة عن هوك الرقم في منشورات دليل التحميص"
+   },
+   "status_at": "2026-11-24 14:27"
+  },
+  {
+   "id": "post07",
+   "title": "1:15 نسبة البن للماء",
+   "planned": "2026-11-09 20:30",
+   "status": "published",
+   "tags": {
+    "type": "قيمي",
+    "hook": "رقم",
+    "format": "carousel",
+    "series": "دليل التحميص"
+   },
+   "platforms": {
+    "ig": {
+     "snapshots": [
+      {
+       "at": "2026-11-10 21:30",
+       "source": "manual",
+       "reach": 781,
+       "likes": 27,
+       "comments": 1,
+       "saves": 14,
+       "shares": 3,
+       "dms": 0,
+       "followers": 446
+      },
+      {
+       "at": "2026-11-16 21:30",
+       "source": "manual",
+       "reach": 1420,
+       "likes": 45,
+       "comments": 1,
+       "saves": 29,
+       "shares": 6,
+       "dms": 0,
+       "followers": 455
+      }
+     ],
+     "url": "https://www.instagram.com/p/EXAMPLE07/",
+     "published_at": "2026-11-09 20:30"
+    }
+   },
+   "test": {
+    "name": "هوك المرجعيات",
+    "variable": "hook",
+    "variant": "رقم",
+    "hypothesis": "هوك السؤال يرفع الحفظ والمشاركة عن هوك الرقم في منشورات دليل التحميص"
+   },
+   "status_at": "2026-11-24 14:27"
+  },
+  {
+   "id": "post08",
+   "title": "اشترك في حصاد الشهر",
+   "planned": "2026-11-10 13:00",
+   "status": "published",
+   "tags": {
+    "type": "إعلاني",
+    "hook": "عرض",
+    "format": "single"
+   },
+   "platforms": {
+    "ig": {
+     "snapshots": [
+      {
+       "at": "2026-11-11 14:00",
+       "source": "manual",
+       "reach": 324,
+       "likes": 9,
+       "comments": 1,
+       "saves": 0,
+       "shares": 0,
+       "dms": 2,
+       "followers": 452
+      },
+      {
+       "at": "2026-11-17 14:00",
+       "source": "manual",
+       "reach": 590,
+       "likes": 15,
+       "comments": 1,
+       "saves": 1,
+       "shares": 0,
+       "dms": 2,
+       "followers": 461
+      }
+     ],
+     "url": "https://www.instagram.com/p/EXAMPLE08/",
+     "published_at": "2026-11-10 13:00"
+    }
+   },
+   "status_at": "2026-11-24 14:27"
+  },
+  {
+   "id": "post09",
+   "title": "رأي عميل: «أول مرة أشرب قهوة بلا سكر»",
+   "planned": "2026-11-11 20:30",
+   "status": "published",
+   "tags": {
+    "type": "تسويقي",
+    "hook": "شهادة",
+    "format": "single"
+   },
+   "platforms": {
+    "ig": {
+     "snapshots": [
+      {
+       "at": "2026-11-12 21:30",
+       "source": "manual",
+       "reach": 687,
+       "likes": 38,
+       "comments": 6,
+       "saves": 6,
+       "shares": 4,
+       "dms": 5,
+       "followers": 458
+      },
+      {
+       "at": "2026-11-18 21:30",
+       "source": "manual",
+       "reach": 1250,
+       "likes": 64,
+       "comments": 6,
+       "saves": 12,
+       "shares": 9,
+       "dms": 5,
+       "followers": 467
+      }
+     ],
+     "url": "https://www.instagram.com/p/EXAMPLE09/",
+     "published_at": "2026-11-11 20:30"
+    }
+   },
+   "status_at": "2026-11-24 14:27"
+  },
+  {
+   "id": "post10",
+   "title": "وش يصير لو خزنت البن في الثلاجة؟",
+   "planned": "2026-11-12 20:30",
+   "status": "published",
+   "tags": {
+    "type": "قيمي",
+    "hook": "سؤال",
+    "format": "reel"
+   },
+   "platforms": {
+    "ig": {
+     "snapshots": [
+      {
+       "at": "2026-11-13 21:30",
+       "source": "manual",
+       "reach": 1705,
+       "likes": 72,
+       "comments": 14,
+       "saves": 24,
+       "shares": 16,
+       "dms": 3,
+       "followers": 464
+      },
+      {
+       "at": "2026-11-19 21:30",
+       "source": "manual",
+       "reach": 3100,
+       "likes": 120,
+       "comments": 14,
+       "saves": 49,
+       "shares": 33,
+       "dms": 3,
+       "followers": 473
+      }
+     ],
+     "url": "https://www.instagram.com/p/EXAMPLE10/",
+     "published_at": "2026-11-12 20:30"
+    }
+   },
+   "status_at": "2026-11-24 14:27"
+  },
+  {
+   "id": "post11",
+   "title": "عرض نهاية الأسبوع",
+   "planned": "2026-11-13 13:00",
+   "status": "published",
+   "tags": {
+    "type": "إعلاني",
+    "hook": "عرض",
+    "format": "single"
+   },
+   "platforms": {
+    "ig": {
+     "snapshots": [
+      {
+       "at": "2026-11-14 14:00",
+       "source": "manual",
+       "reach": 286,
+       "likes": 6,
+       "comments": 0,
+       "saves": 0,
+       "shares": 0,
+       "dms": 0,
+       "followers": 470
+      },
+      {
+       "at": "2026-11-20 14:00",
+       "source": "manual",
+       "reach": 520,
+       "likes": 11,
+       "comments": 0,
+       "saves": 1,
+       "shares": 0,
+       "dms": 0,
+       "followers": 479
+      }
+     ],
+     "url": "https://www.instagram.com/p/EXAMPLE11/",
+     "published_at": "2026-11-13 13:00"
+    }
+   },
+   "status_at": "2026-11-24 14:27"
+  },
+  {
+   "id": "post12",
+   "title": "كيف تقرأ بطاقة التحميص؟",
+   "planned": "2026-11-15 20:30",
+   "status": "published",
+   "tags": {
+    "type": "قيمي",
+    "hook": "سؤال",
+    "format": "carousel",
+    "series": "دليل التحميص"
+   },
+   "platforms": {
+    "ig": {
+     "snapshots": [
+      {
+       "at": "2026-11-16 21:30",
+       "source": "manual",
+       "reach": 1089,
+       "likes": 39,
+       "comments": 4,
+       "saves": 30,
+       "shares": 8,
+       "dms": 2,
+       "followers": 476
+      },
+      {
+       "at": "2026-11-22 21:30",
+       "source": "manual",
+       "reach": 1980,
+       "likes": 66,
+       "comments": 4,
+       "saves": 61,
+       "shares": 17,
+       "dms": 2,
+       "followers": 485
+      }
+     ],
+     "url": "https://www.instagram.com/p/EXAMPLE12/",
+     "published_at": "2026-11-15 20:30"
+    }
+   },
+   "status_at": "2026-11-24 14:27"
+  },
+  {
+   "id": "post13",
+   "title": "3 أخطاء في القهوة المقطرة",
+   "planned": "2026-11-20 20:30",
+   "status": "published",
+   "tags": {
+    "type": "قيمي",
+    "hook": "قائمة",
+    "format": "carousel",
+    "series": "دليل التحميص"
+   },
+   "platforms": {
+    "ig": {
+     "snapshots": [],
+     "url": "https://www.instagram.com/p/EXAMPLE13/",
+     "published_at": "2026-11-20 20:30"
+    }
+   },
+   "status_at": "2026-11-24 14:27"
+  },
+  {
+   "id": "post14",
+   "title": "حصاد ديسمبر: كولومبي",
+   "planned": "2026-11-25 13:00",
+   "status": "designed",
+   "tags": {
+    "type": "تسويقي",
+    "hook": "إعلان",
+    "format": "single"
+   },
+   "platforms": {},
+   "status_at": "2026-11-21 10:00"
+  }
+ ]
+}
